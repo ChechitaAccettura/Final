@@ -1,0 +1,15 @@
+{% extends "layout.html" %}  <!-- declaro de donde traigo la plantilla -->
+
+{% block content %}
+<div class='productos'>
+
+    <div class="container">
+        <h3>Mirá todas estas opciones</h3>     
+        <div class="productos" id="productos"></div>
+    </div>
+
+
+</div>
+<script src="{{ url_for('static', filename='js/scriptcursos.js') }}">  </script>
+
+{% endblock%}

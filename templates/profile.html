@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="icon" href="static/user.svg">
+  <title>Perfil</title>
+
+  <script>
+    // Obtener el ID del registro desde la URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var registroId = urlParams.get("id");
+
+    var baseDatosUrl = "https://my-first-project-con-potrero-default-rtdb.firebaseio.com/";
+
+
+    if (!registroId) {
+      console.error('El parámetro "id" no está presente en la URL.');
+      // Aquí puedes manejar la situación donde el parámetro "id" no está presente.
+    } else {
+      console.log('ID del registro:', registroId);
+    }
+
+    // Obtener los datos del registro desde la API
+    var registroUrl = baseDatosUrl + "alumnos/" + registroId + ".json";
+    fetch(registroUrl)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        document.getElementById("dni").innerText = data.dni || '';
+        document.getElementById("nombreyapellido").innerText = data.nombreyapellido || '';
+        document.getElementById("mail").innerText = data.mail || '';
+        document.getElementById("curso").innerText = data.curso || '';
+      })
+      .catch(function(error) {
+        console.error('Error al obtener los datos del registro:', error);
+      });
+  </script>
+</head>
+<body class="max-container_">
+  <h2>Perfil</h2>
+
+  <table>
+    <tr>
+      <th>DNI:</th>
+      <td id="dni"></td>
+    </tr>
+    <tr>
+      <th>Nombre y Apellido:</th>
+      <td id="nombreyapellido"></td>
+    </tr>
+    <tr>
+      <th>Email:</th>
+      <td id="mail"></td>
+    </tr>
+    <tr>
+      <th>Curso:</th>
+      <td id="curso"></td>
+    </tr>
+  </table>
+
+</body>
+</html>
