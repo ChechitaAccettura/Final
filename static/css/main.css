@@ -299,3 +299,20 @@ form {
     }
 
 }
+
+@media (max-width: 652px) {
+h3, h6, .card-title {
+    font-size: 40px;
+
+}
+
+.parrafo, .btn-outline-secondary, .card-text {
+    font-size: larger;
+}
+
+
+.card {
+    width: 90%;
+    align-self: center !important;
+}
+}
