@@ -3,19 +3,21 @@
 {% block content %}
 
 
-  <div class="container">
-    <div class="left">
+  <div class="container p-4">
+    <div class="left col-2"></div>
+    <div class="left col-4">
       <h1>Login</h1>
     </div>
-    <div class="right">
+    <div class="right col-4">
       <form id="loginForm">
-        <label for="dni">DNI:</label>
-        <input type="text" id="dni" required>
-        <label for="contrasenia">Contraseña:</label>
-        <input type="password" id="contrasenia" required>
-        <input type="submit" value="Iniciar Sesión">
+        <label for="dni"></label>
+        <input class="input1" placeholder="Escriba su DNI" type="text" id="dni" required>
+        <label for="contrasenia"></label>
+        <input class="input1" placeholder="Contraseña Segura" type="password" id="contrasenia" required>
+        <input class="verificar" type="submit" value="Iniciar Sesión">
       </form>
     </div>
+    <div class="left col-2"></div>
   </div>
 
   <script>
@@ -46,7 +48,7 @@
 
           if (registroEncontrado) {
             // Redirigir a alumnos.html con el ID del registro como parámetro en la URL
-            window.location.href = "alumnos.html?id=" + encodeURIComponent(registroId);
+            window.location.href = "/alumnos?id=" + encodeURIComponent(registroId);
           } else {
             alert("Credenciales inválidas. Por favor, intenta nuevamente.");
           }

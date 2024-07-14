@@ -29,6 +29,17 @@ def login():
 def products():
     return render_template("products.html")
 
+@app.route('/alumnos')
+def alumnos():
+    return render_template("alumnos.html")
+
+@app.route('/profile')
+def profile():
+    return render_template("profile.html")
+
+@app.route('/cambiarcontrasenia')
+def cambiarcontrasenia():
+    return render_template("cambiarcontrasenia.html")
 
 # validamos si estamos en el archivo principal para que siempre se quede
 # escuchando una peticion del usuario y si se cumple ejecuta el app.run

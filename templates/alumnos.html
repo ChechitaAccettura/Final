@@ -1,107 +1,101 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <link rel="icon" href="static/user.svg">
-  <title>Alumnos</title>
+{% extends "layout.html" %}  <!-- declaro de donde traigo la plantilla -->
 
-</head>
-<body class="max-container">
+{% block content %}
+
     <h1 id="bienvenido"> </h1>
 
     <script>
-    // Obtener el ID del registro desde la URL
-    var urlParams = new URLSearchParams(window.location.search);
-    var registroId = urlParams.get("id");
+ // Obtener el ID del registro desde la URL
+ var urlParams = new URLSearchParams(window.location.search);
+ var registroId = urlParams.get("id");
 
-    var baseDatosUrl = "https://my-first-project-con-potrero-default-rtdb.firebaseio.com/";
+ var baseDatosUrl = "https://my-first-project-con-potrero-default-rtdb.firebaseio.com/";
 
-    if (!registroId) {
-      console.error('El parámetro "id" no está presente en la URL.');
-      // Aquí puedes manejar la situación donde el parámetro "id" no está presente.
-    } else {
-      console.log('ID del registro:', registroId);
-    }
+ if (!registroId) {
+   console.error('El parámetro "id" no está presente en la URL.');
+   // Aquí puedes manejar la situación donde el parámetro "id" no está presente.
+ } else {
+   console.log('ID del registro:', registroId);
+ }
 
-    // Obtener los datos del registro desde la API
-    var registroUrl = baseDatosUrl + "alumnos/" + registroId + ".json";
-    fetch(registroUrl)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        // Obtener el nombre y apellido del registro
-        var nombreApellido = data.nombreyapellido ;
+ // Obtener los datos del registro desde la API
+ var registroUrl = baseDatosUrl + "alumnos/" + registroId + ".json";
+ fetch(registroUrl)
+   .then(function(response) {
+     return response.json();
+   })
+   .then(function(data) {
+     // Obtener el nombre y apellido del registro
+     var nombreApellido = data.nombreyapellido ;
 
-        // Mostrar el mensaje de bienvenida
-        document.getElementById("bienvenido").innerText = "Bienvenido " + nombreApellido;
+     // Mostrar el mensaje de bienvenida
+     document.getElementById("bienvenido").innerText = "Bienvenido " + nombreApellido;
 
-        // Obtener el curso del registro
-        var curso = data.curso;
+     // Obtener el curso del registro
+     var curso = data.curso;
 
-        // Obtener los datos del curso desde la API
-        var cursosUrl = "https://my-first-project-con-potrero-default-rtdb.firebaseio.com/cursos.json";
-        fetch(cursosUrl)
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(cursosData) {
-            // Buscar el curso que coincida con el nombre del curso del registro
-            for (var key in cursosData) {
-              if (cursosData.hasOwnProperty(key) && cursosData[key].nombrecurso === curso) {
-                var cursoEncontrado = cursosData[key];
-                // Mostrar los datos del curso
-                mostrarDatosCurso(cursoEncontrado);
-                break;
-              }
-            }
-          })
-          .catch(function(error) {
-            console.error(error);
-          });
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+     // Obtener los datos del curso desde la API
+     var cursosUrl = "https://my-first-project-con-potrero-default-rtdb.firebaseio.com/cursos.json";
+     fetch(cursosUrl)
+       .then(function(response) {
+         return response.json();
+       })
+       .then(function(cursosData) {
+         // Buscar el curso que coincida con el nombre del curso del registro
+         for (var key in cursosData) {
+           if (cursosData.hasOwnProperty(key) && cursosData[key].nombrecurso === curso) {
+             var cursoEncontrado = cursosData[key];
+             // Mostrar los datos del curso
+             mostrarDatosCurso(cursoEncontrado);
+             break;
+           }
+         }
+       })
+       .catch(function(error) {
+         console.error(error);
+       });
+   })
+   .catch(function(error) {
+     console.error(error);
+   });
 
-    function mostrarDatosCurso(curso) {
+ function mostrarDatosCurso(curso) {
 
-      var cursoContainer = document.createElement("div");
-      cursoContainer.classList.add('card') //agrega la clase al div recientemente creado
-      cursoContainer.innerHTML = `
-        <h2>${curso.nombre}</h2>
-        <img class="card-img-top" src="${curso.imagen}" alt="${curso.nombre}">
-        <p class="card-title"><strong>Presentación:</strong> ${curso.descripcion}</p>
-        <p class="card-text"><strong>Duración:</strong> ${curso.duracion} hs.</p>
-      `;
-      document.body.appendChild(cursoContainer);
-    }
+   var cursoContainer = document.createElement("div");
+   cursoContainer.classList.add('cursoscard') //agrega la clase al div recientemente creado
+   cursoContainer.innerHTML = `
+     <h2>${curso.nombre}</h2>
+     <img class="card-img-top" src="${curso.imagen}" alt="${curso.nombre}">
+     <p class="card-title"><strong>Presentación:</strong> ${curso.descripcion}</p>
+     <p class="card-text"><strong>Duración:</strong> ${curso.duracion} hs.</p>
+   `;
+   userContainer.appendChild(cursoContainer);
+
+ }
+ 
     
   </script>
-
     
-   <!-- boton de pefil -->
+  <!-- boton de pefil -->
   <button id="perfilButton">Ver perfil</button>
-  <h5>Cursos en los que estás matriculado:</h5>
+  <a class="cambiarPass" target="_blank" href="{{ url_for('cambiarcontrasenia') }}"> Cambiar Contraseña</a>
 
- <script>
+  <h5>Cursos en los que estás matriculado:</h5>
+  <div id="userContainer"> </div>
+
+  <script>
    // Obtener el ID del registro desde la URL
-   var urlParams = new URLSearchParams(window.location.search);
-   var registroId = urlParams.get("id");
+  var urlParams = new URLSearchParams(window.location.search);
+  var registroId = urlParams.get("id");
 
    // Generar la URL de perfil.html con el ID del registro
-   var perfilUrl = "profile.html?id=" + registroId;
+  var perfilUrl = "/profile?id=" + registroId;
 
    // Obtener el botón de perfil y agregar el evento click
-   var perfilButton = document.getElementById("perfilButton");
-   perfilButton.addEventListener("click", function() {
+  var perfilButton = document.getElementById("perfilButton");
+  perfilButton.addEventListener("click", function() {
      // Abrir "perfil.html" en una ventana flotante
-     window.open(perfilUrl, "_blank", "width=600,height=400");
-   });
+  window.open(perfilUrl, "_blank", "width=600,height=400");
+  });
  </script>
-
-</body>
-</html>
+ {% endblock%}

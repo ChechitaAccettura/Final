@@ -2,18 +2,14 @@
 
 {% block content %}
 
-<form class="row g-3">
-    <div class="col-md-4 form-in">
-        <label for="name" class="form-label">Nombre</label>
+<form class="row g-3" id="consultaForm">
+    <div class="col-md-6 form-in">
+        <label for="name" class="form-label">Nombre y apellido</label>
         <input type="text" class="form-control" id="name" required>
 
     </div>
-    <div class="col-md-4 form-in">
-        <label for="lastname" class="form-label">Apellido</label>
-        <input type="text" class="form-control" id="lastname" required>
-    </div>
 
-    <div class="col-md-4 form-in">
+    <div class="col-md-6 form-in">
         <label for="mail" class="form-label">e-mail</label>
         <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend">@</span>
@@ -46,7 +42,7 @@
         <div class="form-check">
         <input class="form-check-input" type="checkbox" value="" id="know" required>
         <label class="form-check-label" for="know">
-            Ya conozco la plataforma de cursos anteriores
+                Deseo recibir novedades sobre esta página.
         </label>
         </div>
     </div>
@@ -55,5 +51,50 @@
         <button class="btn btn-outline-secondary" type="submit">Enviar formulario</button>
     </div>
     </form>
+
+    <script>
+    document.getElementById("consultaForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evitar que se envíe el formulario automáticamente
+        
+    var url = "https://my-first-project-con-potrero-default-rtdb.firebaseio.com/consulta.json";
+    
+        fetch(url)
+            .then(function(response) {
+            return response.json();
+            })
+            .then(function(data) {
+
+            var datos = {
+                nombreyapellido: document.getElementById("name").value,
+                mail: document.getElementById("mail").value,
+                consulta: document.getElementById("consulta").value,
+                horario: document.getElementById("hour").value,
+                telefono: document.getElementById("phone").value
+            };
+    
+            // Realizar la petición POST a la API para guardar los datos del formulario
+            fetch(url, {
+                    method: "POST",
+                    body: JSON.stringify(datos)
+                })
+                
+                .then(function(response) {
+                    alert("Su consulta ha sido enviada, pronto recibirá una respuesta!");
+                    // Restablecer el formulario
+                    document.getElementById("consultaForm").reset();
+    
+                    // Redirigir al usuario al inicio
+                    window.location.href = "/";
+                  })
+                  .catch(function(error) {
+                    alert("Ha ocurrido un error. Por favor, intenta nuevamente.");
+                    console.error(error);
+                });
+            });
+        }
+        )
+
+
+        </script>
 
 {% endblock%}
